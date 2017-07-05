@@ -1,0 +1,23 @@
+---
+#https://coderwall.com/p/e7gzbq/https-with-certbot-for-nginx-on-amazon-linux
+- name: download certbot
+  get_url:
+    url: https://dl.eff.org/certbot-auto
+    dest: /usr/bin/certbot-auto
+    mode: "a+x"
+
+- name: Check certificate file presence
+  stat: path=/etc/letsencrypt/live/{{ gitea_server_name }}/fullchain.pem 
+  register: certificate
+
+- name: get certificate
+  shell: shell yes | certbot-auto --nginx certonly -d {{ gitea_server_name }} -m  {{ gitea_certbot_mail }}
+  when: certificate.stat.exists == false
+
+- name: auto update cert keys
+  cron:
+    name: letsencrypt
+    user: root
+    month: "*/2"
+    job: sh -c 'certbot-auto renew --webroot --webroot-path /usr/share/nginx/html  && service nginx reload' >> /var/log/letsencrypt/cron.log
+  tags: cron

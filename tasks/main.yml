@@ -1,0 +1,32 @@
+---
+  #Prepare aws instance gitea.ai.coffee for docker and docker-compose deploy with ansible playbook.
+  vars:
+    ansible_become_pass: {{ gitea_become_pass }}
+    dhparam_size: 2048
+    dhparam_file: /etc/ssl/dhparam.pem
+  become: yes
+  become_user: root
+  become_method: sudo
+  
+  roles:
+    - gronke.dhparam
+  tasks:
+    - name: copy files
+      copy: src={{ item.src }}.j2 dest={{ item.dest }}
+      with_items:
+        - { src: '../templates/docker-compose.yml', dest: '/root/docker-compose.yml' }
+        - { src: '../templates/gitea.conf', dest: '/etc/nginx/conf.d/gitea.conf' }
+        - { src: '../templates/ssl-redirect.conf', dest: '/etc/nginx/default.d/ssl-redirect.conf' }
+      tags: copy
+
+    - include: docker_install.yml
+      tags: docker
+    - include: nginx.yml
+      tags: nginx
+    - include: docker_compose_role.yml
+      tags: compose
+    - include: postgress_user.yml
+      tags: postgress
+    - include: ssl.yml
+      tags: ssl
+

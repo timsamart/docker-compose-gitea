@@ -1,0 +1,33 @@
+version: "2"
+
+services:
+  gitea-db:
+    container_name: {{ gitea_db_container_name }}
+    image: postgres:alpine
+    environment:
+      - POSTGRESS_PASSWORD={{ gitea_postgress_password }}
+    ports:
+      - "5432:5432"
+    volumes:
+      - /volumes/gitea-db-data:/var/lib/postgresql/data
+
+  gitea:
+    container_name: {{ gitea_container_name }}
+    image: gitea/gitea:latest
+    links:
+      - {{ gitea_db_container_name }}:{{ gitea_db_container_name }}
+    ports:
+      - "8322:22"
+      - "11180:3000"
+    volumes:
+      - /volumes/gitea-data:/data
+
+
+
+#Data volumes are designed to persist data, independent of the container’s lifecycle.
+volumes:
+  gitea-db-data:
+  gitea-data:
+    
+
+    

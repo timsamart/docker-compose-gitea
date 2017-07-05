@@ -1,0 +1,19 @@
+galaxy_info:
+  author: Alex Grushevsky
+  description: Creates a https gitea server, deploys agitea and postgresql with docker-compose as connected services, nginx as proxy pass to gitea
+  license: GPLv3
+  min_ansible_version: 2.0
+
+  galaxy_tags:
+    - gitea
+    - docker-compose
+    - nginx
+    - development
+    - web
+  platforms:
+  - name: centos
+    versions:
+    - 6
+    - 7
+dependencies:
+  - gronke.dhparam

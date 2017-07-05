@@ -1,0 +1,35 @@
+#install easy_install , pip, docker-py in order, for using ansible’s docker container module
+- name: installs docker
+  yum:
+      name: "{{ item }}"
+      state: latest 
+  with_items:
+      - docker
+      - python-setuptools
+      - python27-pip
+
+- name: add group docker 
+  group:
+    name: docker
+    state: present
+    
+- name: add user root to group docker
+  user:
+    name: root
+    groups: root,docker
+    append: yes
+
+- name: Start docker
+  service:
+    name: docker
+    state: started
+
+
+#https://github.com/ansible/ansible/issues/17495
+- name: Install docker-py 1.9.0
+  pip:
+    name: "{{ item }}"
+    version: 1.9.0
+  with_items:
+    - docker-py 
+

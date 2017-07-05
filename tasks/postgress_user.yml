@@ -1,0 +1,16 @@
+---
+- name: Check that db exist
+  shell: docker exec -i gitea-db  psql -U  postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='gitea'"
+  register: dbexist
+
+#- name: debug var
+  #debug: 
+    #msg: "{{ dbexist }}"
+  
+- name:  add gitea db user
+  shell: docker exec -i gitea-db psql -U postgres -c "CREATE USER gitea WITH PASSWORD 'aaaa1';"
+  when: dbexist.stdout != "1"
+
+- name:  create gitea db
+  shell: docker exec -i gitea-db psql -U postgres -c "CREATE DATABASE gitea OWNER gitea;"
+  when: dbexist.stdout != "1"

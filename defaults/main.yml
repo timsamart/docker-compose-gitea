@@ -1,0 +1,11 @@
+---
+# File: main.yml
+# Type: defaults
+
+gitea_container_name: "gitea"
+gitea_db_container_name: "gitea-db"
+gitea_postgress_password: "password"
+gitea_become_pass: "password"
+gitea_server_name: "gitea.ai.coffee"
+gitea_certbot_mail: "example@gmail.com"
+
