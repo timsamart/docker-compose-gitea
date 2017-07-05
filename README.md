@@ -12,12 +12,12 @@ You need to be a sudoer on your server
 
 Role Variables
 --------------
-gitea_container_name: name of docker container for gitea
-gitea_db_container_name: name of docker container for postgress
-gitea_postgress_password: database password for gitea
-gitea_become_pass: sudo pass on target server
-gitea_server_name: the baseurl (your result server should be available at https://{{ gitea_server_name }})
-gitea_certbot_mail: mail for letsencrypt certificate generation
+* ``gitea_container_name``: name of docker container for gitea
+* ``gitea_db_container_name``: name of docker container for postgress
+* ``gitea_postgress_password``: database password for gitea
+* ``gitea_become_pass``: sudo pass on target server
+* ``gitea_server_name``: the baseurl (your result server should be available at https://{{ gitea_server_name }})
+* ``gitea_certbot_mail``: mail for letsencrypt certificate generation
 
 License
 -------
